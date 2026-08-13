@@ -1,0 +1,5 @@
+# Ignorar cualquier carpeta node_modules en cualquier subnivel
+**/node_modules/
+
+# También es altamente recomendable ignorar las variables de entorno si las usas ahí dentro
+**/ .env
