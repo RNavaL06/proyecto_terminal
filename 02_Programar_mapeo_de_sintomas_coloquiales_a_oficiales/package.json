@@ -1,0 +1,16 @@
+{
+  "name": "02_programar_mapeo_de_sintomas_coloquiales_a_oficiales",
+  "version": "1.0.0",
+  "description": "",
+  "main": "demoLimpieza.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "node-nlp": "^5.0.0-alpha.5"
+  }
+}
