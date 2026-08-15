@@ -9,7 +9,7 @@ const googleLogin = async (req, res) => {
 
     try {
         // Verificar el token con Google
-        const ticket = await client.verifyIdToken({
+        const ticket = await client.verifyIdToken({ 
             idToken: token,
             audience: process.env.GOOGLE_CLIENT_ID,
         });
@@ -21,17 +21,17 @@ const googleLogin = async (req, res) => {
         let userId;
 
         if (rows.length > 0) {
-            userId = rows[0].id;
+            userId = rows[0].id_usuario; 
         } else {
             const [result] = await pool.query(
-                'INSERT INTO usuarios (google_id, email, nombre) VALUES (?, ?, ?)',
+                'INSERT INTO usuarios (google_id, correo_electronico, nombre_completo) VALUES (?, ?, ?)',
                 [googleId, email, name]
             );
             userId = result.insertId;
         }
 
         // Generar JWT para la sesión de la API
-        const apiToken = jwt.sign({ id: userId }, process.env.JWT_SECRET, { expiresIn: '24h' });
+        const apiToken = jwt.sign({ id: userId }, process.env.JWT_SECRET, { expiresIn: '76h' });
 
         res.status(200).json({ mensaje: 'Inicio de sesión exitoso', token: apiToken });
     } catch (error) {

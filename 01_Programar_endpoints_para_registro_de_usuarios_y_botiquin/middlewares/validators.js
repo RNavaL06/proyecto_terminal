@@ -11,9 +11,9 @@ const validateRequest = (req, res, next) => {
 
 // Validaciones para el Botiquín (Medicamentos)
 const validateMedication = [
-    body('nombre').notEmpty().withMessage('El nombre del medicamento es obligatorio').isString(),
+    body('nombre_comercial').notEmpty().withMessage('El nombre del medicamento es obligatorio').isString(),
     body('dosis').notEmpty().withMessage('La dosis es obligatoria'),
-    body('cantidad').isInt({ min: 1 }).withMessage('La cantidad debe ser un número entero mayor a 0'),
+    body('cantidad_disponible').isInt({ min: 1 }).withMessage('La cantidad debe ser un número entero mayor a 0'),
     body('fecha_caducidad').isISO8601().toDate().withMessage('Formato de fecha inválido (usa YYYY-MM-DD)'),
     validateRequest
 ];
