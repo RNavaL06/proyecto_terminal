@@ -1,0 +1,3 @@
+Se agrego la función filtroRelevancia.js en utils, esta es el entregable
+Se hizo una actualización en la función buscarDiagnosticos en el archivo utils/mapearSintomas.js
+Se actualizó la función analizarSintomas en controllers/symptomController.js para que devuelva los resultados más importantes
