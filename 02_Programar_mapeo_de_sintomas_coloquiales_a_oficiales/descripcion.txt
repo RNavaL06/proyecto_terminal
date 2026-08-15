@@ -1,0 +1,6 @@
+Se agrego un controller y un route, estos se integran en el proyecto final
+además en app.js, se debe incluir app.use('/api/sintomas', symptomRoutes); y 
+
+// Entrenar el modelo con la BD
+    await inicializarMotorNLP();
+
