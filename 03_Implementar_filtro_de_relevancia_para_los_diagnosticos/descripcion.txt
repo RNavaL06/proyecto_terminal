@@ -1,3 +1,4 @@
+La actividad 02 y esta tienen los mismos datos, por lo tanto, se integra esta actividad al proyecot final
 Se agrego la función filtroRelevancia.js en utils, esta es el entregable
 Se hizo una actualización en la función buscarDiagnosticos en el archivo utils/mapearSintomas.js
 Se actualizó la función analizarSintomas en controllers/symptomController.js para que devuelva los resultados más importantes
