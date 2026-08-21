@@ -1,0 +1,2 @@
+Esta actividad junto con la actividad 06 es la misma, por lo tanto, se entrega esta actividad en el proyecto final
+se agrego el archivo ubicacionesController.js

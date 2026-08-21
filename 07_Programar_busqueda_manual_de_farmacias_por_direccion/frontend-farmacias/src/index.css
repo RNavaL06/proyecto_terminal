@@ -1,0 +1,45 @@
+@import "tailwindcss";
+
+body {
+  background-color: #f8fafc;
+}
+/* Quita el triángulo/flecha de los tooltips de Leaflet para estilo Google Maps */
+.leaflet-tooltip.etiqueta-sin-flecha::before {
+  display: none !important;
+}
+/* Sobrescribir estilos por defecto de Leaflet para Tooltips transparentes */
+.tooltip-transparente {
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  /* Halo blanco alrededor del texto para que resalte sobre el mapa */
+  text-shadow: -1.5px -1.5px 0 #ffffff, 1.5px -1.5px 0 #ffffff, -1.5px 1.5px 0 #ffffff, 1.5px 1.5px 0 #ffffff !important;
+}
+
+/* Ocultar la flechita (caret) en todas las direcciones */
+.tooltip-transparente::before,
+.tooltip-transparente::after {
+  display: none !important;
+}
+
+/* --- ESTILOS POPUP GOOGLE MAPS --- */
+.popup-google .leaflet-popup-content-wrapper {
+  padding: 0 !important;
+  overflow: hidden;
+  border-radius: 1rem !important; /* Bordes bien redondeados */
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+}
+
+.popup-google .leaflet-popup-content {
+  margin: 0 !important;
+  width: 250px !important; /* Ancho fijo de la tarjeta */
+  line-height: normal;
+}
+
+.popup-google .leaflet-popup-close-button {
+  color: white !important; /* Cruz blanca para contrastar con la imagen */
+  text-shadow: 0 1px 3px rgba(0,0,0,0.8) !important;
+  font-size: 18px !important;
+  padding: 6px 6px 0 0 !important;
+  z-index: 10;
+}
