@@ -1,0 +1,98 @@
+DOCUMENTACION DE DESARROLLO: INTEGRACION DE BASE DE DATOS Y SISTEMA DE GUARDADO DE RECETAS MEDICAS
+
+1. MODIFICACIONES A NIVEL BASE DE DATOS (SCRIPTS SQL)
+
+Se estructuró un ecosistema relacional para asegurar la integridad de la información médica. Se generaron los siguientes scripts en la raíz del proyecto:
+
+- script_tabla_medicos.sql: Creación de la tabla independiente para médicos, incluyendo llaves únicas (cédula profesional) y valores por defecto para procesar recetas anónimas (cuando el OCR no detecta la información del doctor).
+
+Fragmento de código 1.1: Valores por defecto en la tabla médicos.
+CREATE TABLE IF NOT EXISTS medicos (
+    id_medico INT AUTO_INCREMENT PRIMARY KEY,
+    nombre_medico VARCHAR(150) DEFAULT 'Médico Desconocido',
+    cedula_profesional VARCHAR(50) DEFAULT 'Sin Cédula' UNIQUE,
+    fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+- script_tabla_recetas.sql: Creación de la tabla central que relaciona al usuario autenticado (paciente) y al médico. Incluye eliminación en cascada para mantener la base de datos limpia si se borra un paciente.
+
+- script_tabla_medicamentos.sql: Se incluyeron sentencias ALTER TABLE para integrar la llave foránea id_receta a la tabla preexistente, y se flexibilizaron campos como dosis y fecha_caducidad para soportar valores nulos.
+
+Fragmento de código 1.2: Ajustes a la tabla de medicamentos.
+ALTER TABLE medicamentos 
+    ADD COLUMN id_receta INT DEFAULT NULL AFTER id_usuario,
+    MODIFY COLUMN fecha_caducidad DATE NULL,
+    MODIFY COLUMN dosis VARCHAR(50) NULL;
+
+- script_datos_prueba.sql: Script de población con 5 médicos, 20 recetas y 30 medicamentos para poder llevar a cabo las pruebas de integración del sistema.
+
+
+2. DESARROLLO EN EL BACKEND (NODE.JS + EXPRESS)
+
+El objetivo central en el backend fue crear una pasarela segura y transaccional para la escritura en la base de datos.
+
+- Conexión a MySQL: Se configuró un Pool de Conexiones asíncrono en backend/config/db.js utilizando la librería mysql2/promise, protegiendo las credenciales mediante un archivo de entorno (.env).
+
+- Controlador Transaccional (backend/controllers/recetaController.js): 
+Se creó la función guardarReceta que implementa Transacciones de Base de Datos. Esto garantiza que si un medicamento falla al guardarse, la receta entera se anula (rollback), previniendo datos huérfanos. Además, cuenta con lógica para asignar un médico genérico si la petición carece de estos datos.
+
+Fragmento de código 2.1: Implementación transaccional y asignación de médico genérico.
+const connection = await pool.getConnection();
+await connection.beginTransaction();
+
+// Variables por defecto si no vienen en la petición
+const nombreMedicoFinal = (nombre_medico) ? nombre_medico.trim() : "Médico Desconocido";
+const cedulaFinal = (cedula_profesional) ? cedula_profesional.trim() : "Sin Cédula";
+
+// Si el médico no existía, se inserta en la base de datos
+if (!id_medico) {
+    const [medicoResult] = await connection.query(
+        "INSERT INTO medicos (nombre_medico, cedula_profesional) VALUES (?, ?)",
+        [nombreMedicoFinal, cedulaFinal]
+    );
+    id_medico = medicoResult.insertId;
+}
+
+// Hacer commit si todo el proceso (médico, receta y medicamentos) fue exitoso
+await connection.commit();
+
+- Normalización de Fechas: Se desarrolló una función auxiliar capaz de interpretar fechas extraídas por la IA (ej. "07/04/29") y transformarlas al formato estricto (AAAA-MM-DD) esperado por MySQL.
+
+- Enrutamiento Protegido (backend/routes/recetaRoutes.js): Se habilitó el endpoint POST /api/recetas/guardar protegido por un middleware (verifyToken) que extrae de forma segura la identidad del usuario sin depender del frontend.
+
+
+3. DESARROLLO EN EL FRONTEND (REACT + VITE)
+
+A nivel de interfaz gráfica, se orquestó la captura del JSON, la retroalimentación visual (UX) y el envío por HTTP.
+
+- Servicio de API (frontend/services/api.js): Se exportó la función asíncrona guardarRecetaMedica utilizando Axios, aislando la lógica de comunicación y la captura de errores en un solo módulo reutilizable.
+
+Fragmento de código 3.1: Petición HTTP POST al backend utilizando Axios.
+export const guardarRecetaMedica = async (datosClinicos) => {
+  try {
+    const response = await apiClient.post('/recetas/guardar', {
+      datos_clinicos: datosClinicos
+    });
+    return response.data;
+  } catch (error) {
+    const mensajeError = error.response?.data?.mensaje || "Error al guardar.";
+    throw new Error(mensajeError);
+  }
+};
+
+- Componente Modal (frontend/components/Escaner/FormularioEdicionModal.jsx): Se introdujo un manejo de estado (isSaving) para deshabilitar el botón de guardado en el momento exacto en que inicia la petición, renderizando un spinner de carga que impide clics múltiples.
+
+Fragmento de código 3.2: Renderizado condicional del botón de guardar para mejorar la experiencia del usuario.
+<button 
+    type="submit"
+    disabled={isSaving}
+    className="w-full flex items-center justify-center gap-2 bg-blue-500..."
+>
+    {isSaving ? (
+        <> <Loader2 className="w-5 h-5 animate-spin" /> Guardando en BD... </>
+    ) : (
+        <> <Save className="w-5 h-5" /> Confirmar y Guardar Información </>
+    )}
+</button>
+
+- Página Principal (frontend/pages/EscanerPage.jsx): Se diseñó la función contenedora que invoca el servicio de la API y despliega notificaciones dinámicas (Toast) para confirmar visualmente al usuario que la información clínica ya es parte de su historial de salud seguro.

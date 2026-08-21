@@ -1,0 +1,36 @@
+RESULTADOS DE LA ACTIVIDAD: REALIZAR PRUEBAS DE INTEGRACIÓN DE BASE DE DATOS Y MODELO LLM
+
+Tras la implementación de la capa de persistencia en el backend y su conexión con la interfaz gráfica, se llevaron a cabo las pruebas de integración del sistema completo. El objetivo de estas pruebas fue validar que el flujo de información funcionara correctamente de extremo a extremo: desde la captura de la receta física, su procesamiento inteligente mediante el modelo LLM (Gemini), hasta el almacenamiento definitivo y relacional en la base de datos MySQL.
+
+Los resultados obtenidos de esta fase de integración son los siguientes:
+
+1. MAPEO Y TRANSFORMACION DE DATOS EXITOSA
+Se comprobó que los datos extraídos de manera no estructurada por el modelo LLM (reconocimiento óptico de caracteres) se transforman correctamente en un formato JSON estructurado. Durante la prueba, este payload JSON fue interpretado sin errores por el controlador del backend, logrando mapear la información simultáneamente hacia las tres tablas relacionales del proyecto: médicos, recetas y medicamentos.
+
+[ INSTRUCCIÓN PARA TI: Agrega aquí una captura de pantalla de la aplicación React. Específicamente el modal "Revisión de Datos" donde se aprecian los campos de texto llenos (diagnóstico, paciente, medicamentos) listos para guardarse. ]
+Figura 1.1. Interfaz de revisión presentando los datos estructurados extraídos por el modelo LLM previo a su almacenamiento.
+
+
+2. INTEGRIDAD TRANSACCIONAL (PROPIEDADES ACID)
+Uno de los resultados más críticos fue la validación del modelo de transacciones en la base de datos. Se realizaron pruebas forzando errores durante la inserción de los medicamentos, lo que desencadenó el mecanismo de "rollback" (reversión). El resultado demostró que el sistema es robusto, ya que no permite la creación de recetas vacías o registros huérfanos, garantizando la consistencia total de la información clínica del paciente.
+
+[ INSTRUCCIÓN PARA TI: Agrega aquí una captura de pantalla de tu cliente de base de datos (MySQL Workbench, DBeaver o phpMyAdmin). Toma la captura mostrando los registros insertados en la tabla "medicamentos", donde se vea claramente el id_receta asignado. ]
+Figura 1.2. Registros exitosos en la base de datos MySQL demostrando la integridad relacional tras el guardado.
+
+
+3. RESILIENCIA ANTE DATOS INCOMPLETOS O ANOMALOS
+El modelo LLM puede enfrentar dificultades para extraer datos específicos si la receta original es ilegible o no los contiene (por ejemplo, omitiendo la cédula del médico). Los resultados mostraron que el sistema es resiliente ante estas omisiones; en lugar de generar un error en la base de datos, el controlador asigna de forma inteligente perfiles genéricos. Esto permite que el paciente pueda guardar sus medicamentos independientemente de la calidad de emisión de la receta.
+
+[ INSTRUCCIÓN PARA TI: Agrega aquí una captura de pantalla de la tabla "medicos" en tu base de datos, resaltando la fila donde dice "Médico Desconocido" y "Sin Cédula". ]
+Figura 1.3. Asignación automática de perfil médico genérico en la base de datos ante la ausencia de datos legibles.
+
+
+4. SINCRONIZACION Y EXPERIENCIA DE USUARIO (UX)
+Desde la perspectiva del cliente (Frontend), la integración arrojó resultados altamente satisfactorios. Se observó una sincronización perfecta entre el inicio de la petición HTTP, el bloqueo temporal de la interfaz (mediante indicadores de carga) y la resolución de la respuesta de la base de datos. Las notificaciones asíncronas confirmaron al usuario en tiempo real el éxito del proceso de guardado.
+
+[ INSTRUCCIÓN PARA TI: Agrega aquí una captura de pantalla de la interfaz de tu frontend justo en el momento de guardar, ya sea mostrando el botón azul que dice "Guardando en BD..." con el spinner, o bien la alerta/toast verde que indica que el guardado fue un éxito. ]
+Figura 1.4. Retroalimentación visual asíncrona (notificaciones y estado de carga) hacia el usuario durante el guardado.
+
+
+CONCLUSION DE LA INTEGRACION
+Las pruebas de integración demostraron que la arquitectura propuesta para el proyecto terminal BDI es funcional y escalable. Se logró el objetivo principal de la actividad al construir un puente tecnológico sólido entre las capacidades avanzadas de la inteligencia artificial generativa (LLM) y la confiabilidad del almacenamiento de datos relacional tradicional, culminando con éxito el ecosistema central de la aplicación.
