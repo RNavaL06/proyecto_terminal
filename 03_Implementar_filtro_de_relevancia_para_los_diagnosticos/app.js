@@ -1,11 +1,15 @@
 const express = require('express');
+const cors = require('cors');
 const { inicializarMotorNLP } = require('./utils/mapearSintomas');
 const symptomRoutes = require('./routes/symptomRoutes');
 
 const app = express();
 
+app.use(cors());
+
 // Middlewares
 app.use(express.json());
+
 
 // Rutas
 app.use('/api/sintomas', symptomRoutes);
@@ -21,10 +25,10 @@ const PORT = 3000;
 const arrancarServidor = async () => {
     // Entrenar el modelo con la BD
     await inicializarMotorNLP();
-    
+
     // Abrir el puerto
     app.listen(PORT, () => {
-        console.log(`Servidor de la Actividad 2 corriendo en el puerto ${PORT}`);
+        console.log(`Servidor de la Actividad 3 corriendo en el puerto ${PORT}`);
     });
 };
 

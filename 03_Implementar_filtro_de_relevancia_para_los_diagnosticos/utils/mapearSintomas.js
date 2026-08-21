@@ -53,7 +53,7 @@ const buscarDiagnosticos = async (fraseUsuario) => {
         // Filtración de los datos obtenidos desde la BD para devolver los objetos completos
         // Usamos la cláusula IN (?) para buscar múltiples códigos a la vez de forma eficiente
         const [resultadosBrutos] = await pool.query(
-            'SELECT termino_medico, codigo_cie10 FROM catalogo_cie10 WHERE codigo_cie10 IN (?)',
+            'SELECT termino_medico, codigo_cie10, keywords FROM catalogo_cie10 WHERE codigo_cie10 IN (?)',
             [codigosEncontrados]
         );
 
