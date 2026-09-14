@@ -1,0 +1,35 @@
+const express = require('express');
+const cors = require('cors');
+const { inicializarMotorNLP } = require('./utils/mapearSintomas');
+const symptomRoutes = require('./routes/symptomRoutes');
+
+const app = express();
+
+app.use(cors());
+
+// Middlewares
+app.use(express.json());
+
+
+// Rutas
+app.use('/api/sintomas', symptomRoutes);
+
+// Manejo de rutas no encontradas
+app.use((req, res) => {
+    res.status(404).json({ error: 'Endpoint no encontrado' });
+});
+
+const PORT = 3001;
+
+// Inicialización asíncrona: Entrenar IA y luego levantar el servidor
+const arrancarServidor = async () => {
+    // Entrenar el modelo con la BD
+    await inicializarMotorNLP();
+
+    // Abrir el puerto
+    app.listen(PORT, () => {
+        console.log(`Servidor de la Actividad 9 (Captura de Voz) corriendo en el puerto ${PORT}`);
+    });
+};
+
+arrancarServidor();
