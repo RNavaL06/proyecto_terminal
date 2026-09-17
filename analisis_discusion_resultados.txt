@@ -1,0 +1,25 @@
+Análisis y Discusión de Resultados
+
+En respuesta a la interrogante sobre el enfoque de esta sección: El "Análisis y Discusión de Resultados" no debe ser un simple resumen repetitivo de cada actividad por separado (eso corresponde a la sección de Resultados). Por el contrario, debe ser una evaluación integral de cómo el conjunto de todas las actividades logradas contribuye a resolver el problema central del proyecto. Se analiza el sistema como un todo, se discuten los hallazgos más relevantes, los retos técnicos superados y las implicaciones de haber implementado estas funcionalidades.
+
+A continuación, se presenta una propuesta de redacción para esta sección de tu reporte final, basada en las actividades desarrolladas en el proyecto (Registro de usuarios, Procesamiento NLP/LLM, Geolocalización, Captura por voz y Cotización de medicamentos):
+
+--------------------------------------------------------------------------------
+
+ANÁLISIS Y DISCUSIÓN DE RESULTADOS
+
+1. Evaluación Integral del Sistema Desarrollado
+El desarrollo de las actividades planificadas permitió construir un ecosistema funcional que asiste al usuario desde el reporte inicial de un malestar hasta la búsqueda eficiente de alternativas farmacológicas. Al integrar módulos de procesamiento de lenguaje natural (LLM), geolocalización y APIs de búsqueda de precios (SerpApi), se logró un flujo de información ininterrumpido. El análisis de las pruebas de integración demuestra que la arquitectura cliente-servidor implementada es capaz de orquestar múltiples servicios externos manteniendo una latencia aceptable para el usuario final.
+
+2. Procesamiento de Lenguaje Natural y Estandarización Médica
+Una de las aportaciones más significativas de los resultados obtenidos radica en el mapeo de síntomas coloquiales a términos médicos oficiales y el filtro de relevancia de diagnósticos. Durante la implementación, se observó que los usuarios tienden a describir sus padecimientos de forma ambigua. La conexión del backend con la API del LLM demostró ser una solución robusta para interpretar y estructurar estos datos, lo cual es fundamental para generar un análisis preciso de las recetas y los síntomas. La discusión principal en este punto recae en la dependencia de la precisión del modelo de lenguaje; si bien los resultados son altamente acertados, fue necesario implementar validaciones estrictas (filtros de relevancia) para asegurar que la información médica manejada no se desvíe hacia falsos positivos que puedan confundir al usuario.
+
+3. Accesibilidad e Interacción de Usuario (Captura por Voz)
+La implementación de la captura de síntomas mediante voz representó un reto técnico importante en cuanto a la gestión de permisos del navegador y la estabilidad del reconocimiento de audio. Los resultados indican que proveer una interfaz de voz reduce significativamente la fricción de uso, especialmente en usuarios que puedan tener dificultades para escribir debido a su estado de salud. La discusión en este módulo gira en torno a la robustez de la interfaz frente a casos donde el hardware no está disponible o el usuario deniega los permisos; la solución implementada (fallback gracefully) demostró que es posible mantener la funcionalidad del sistema (regresando a entrada de texto) sin romper la experiencia del usuario.
+
+4. Geolocalización y Toma de Decisiones Económicas
+La integración de APIs para la obtención de coordenadas y la cotización de medicamentos con SerpApi culminó en la creación de una herramienta con impacto directo en la economía y logística del usuario. Los resultados de la tabla comparativa de precios muestran que es viable extraer y normalizar datos de múltiples farmacias en tiempo real. No obstante, se discute que la calidad de este servicio está intrínsecamente ligada a la disponibilidad y tiempos de respuesta de los proveedores de terceros (SerpApi). Las pruebas revelaron que la búsqueda dual (tanto por geolocalización automática como manual por dirección) es una estrategia necesaria, ya que otorga control total al usuario en escenarios de fallos de red o errores de GPS en el dispositivo.
+
+5. Conclusión del Análisis
+En conjunto, los resultados obtenidos confirman la viabilidad técnica del proyecto. La transición fluida de datos a través de los módulos (Usuario -> Voz/Texto -> LLM -> Backend -> Cotización -> UI) demuestra una integración exitosa. Los retos encontrados, como la variabilidad en el lenguaje del usuario y el manejo de APIs externas, fueron solventados mediante una arquitectura resiliente y un buen manejo de errores en el frontend. El sistema no solo cumple con los requisitos funcionales establecidos en las actividades, sino que propone una base tecnológica escalable para futuros módulos de salud digital.
+

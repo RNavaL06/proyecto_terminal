@@ -1,0 +1,59 @@
+USE bdi_database;
+
+-- =======================================================
+-- POBLAR CATÁLOGO CIE-10 (Términos coloquiales -> NLP)
+-- =======================================================
+INSERT INTO catalogo_cie10 (termino_medico, codigo_cie10, keywords) 
+VALUES 
+('Cefalea', 'R51', '["cabeza", "migraña", "punzadas", "sien"]'),
+('Dolor abdominal y pélvico', 'R10', '["panza", "estomago", "vientre", "retortijon", "colico"]'),
+('Náusea', 'R11.0', '["nausea", "ganas", "vomitar", "asco", "revuelto"]'),
+('Vómito', 'R11.1', '["vomito", "vomite", "volver", "arrojar", "regresar"]'),
+('Dolor de garganta', 'R07.0', '["garganta", "tragar", "anginas", "ardor", "raspa"]'),
+('Dolor en el pecho', 'R07.4', '["pecho", "corazon", "opresion", "torax"]'),
+('Dorsalgia, no especificada', 'M54.9', '["espalda", "lumbar", "cintura"]'),
+('Fiebre, no especificada', 'R50.9', '["fiebre", "calentura", "temperatura", "hirviendo", "caliente"]'),
+('Diarrea y gastroenteritis', 'A09', '["diarrea", "chorrillo", "flojo", "liquido", "evacuacion"]'),
+('Infección aguda de las vías respiratorias', 'J06.9', '["gripa", "gripe", "catarro", "resfriado", "moco", "mocos"]'),
+('Tos', 'R05', '["tos", "toser", "carraspeo", "flema", "flemas", "seca"]'),
+('Disnea', 'R06.0', '["falta", "aire", "respirar", "ahogo", "asfixia", "sofoco"]'),
+('Mareo y desvanecimiento', 'R42', '["mareo", "mareado", "vueltas", "vertigo"]'),
+('Síncope y colapso', 'R55', '["desmayo", "desmaye", "desvanecimiento", "conocimiento", "inconsciente"]'),
+('Epistaxis', 'R04.0', '["sangrado", "sangre", "nariz", "hemorragia"]'),
+('Contusión, no especificada', 'T14.0', '["moreton", "golpe", "magulladura", "hematoma", "morado"]'),
+('Edema, no especificado', 'R60.9', '["hinchazon", "hinchado", "inflamado", "retencion", "liquidos"]'),
+('Hipertensión esencial', 'I10', '["presion", "alta", "hipertension"]'),
+('Diabetes mellitus', 'E14', '["azucar", "diabetes", "glucosa"]'),
+('Pirosis', 'R12', '["agruras", "acidez", "quemazon", "reflujo"]'),
+('Mialgia', 'M79.1', '["musculo", "musculos", "cuerpo", "cortado", "macullado"]'),
+('Artralgia', 'M25.5', '["articulaciones", "coyunturas", "huesos", "rodilla", "codo"]'),
+('Insomnio', 'G47.0', '["dormir", "insomnio", "sueño", "desvelo", "despertar"]'),
+('Ansiedad, no especificada', 'F41.9', '["ansiedad", "nervios", "nerviosismo", "estres", "angustia"]'),
+('Malestar y fatiga', 'R53', '["cansancio", "fatiga", "debilidad", "agotamiento", "pesadez"]'),
+('Prurito, no especificado', 'L29.9', '["comezon", "picazon", "rascar", "urticaria", "ronchas"]'),
+('Estreñimiento', 'K59.0', '["estreñimiento", "tapado", "obrar", "baño", "constipacion"]'),
+('Disuria', 'R30.0', '["orinar", "pipi", "orin", "vejiga", "mal"]'),
+('Conjuntivitis, no especificada', 'H10.9', '["ojo", "ojos", "lagañas", "rojo", "irritado"]'),
+('Calambre y espasmo', 'R25.2', '["calambre", "tiron", "engarrotado", "espasmo"]');
+
+
+-- =======================================================
+-- POBLAR CATÁLOGO DE MEDICAMENTOS (Datos Maestros)
+-- =======================================================
+INSERT INTO catalogo_medicamentos (nombre_comercial, sustancia_activa, formato)
+VALUES 
+('Aspirina Protect', 'Ácido Acetilsalicílico', 'Tabletas 100mg'),
+('Tylenol', 'Paracetamol', 'Tabletas 500mg'),
+('Tempra', 'Paracetamol', 'Jarabe Infantil'),
+('Motrin', 'Ibuprofeno', 'Tabletas 400mg'),
+('Amoxil', 'Amoxicilina', 'Cápsulas 500mg'),
+('Treda', 'Neomicina, Caolín, Pectina', 'Tabletas'),
+('Pepto-Bismol', 'Subsalicilato de Bismuto', 'Suspensión'),
+('Aleve', 'Naproxeno', 'Tabletas 220mg'),
+('Loratadina', 'Loratadina', 'Tabletas 10mg'),
+('Riopan', 'Magaldrato con Dimeticona', 'Gel'),
+('Aderogyl', 'Vitamina A, C, D', 'Ampolletas'),
+('Nexium', 'Esomeprazol', 'Tabletas 40mg'),
+('Dolo-Neurobion', 'Complejo B, Diclofenaco', 'Tabletas'),
+('Desenfriol D', 'Clorfenamina, Paracetamol', 'Tabletas'),
+('Mucosolvan', 'Ambroxol', 'Jarabe');
